@@ -11,19 +11,33 @@ Aplicação front-end de um marketplace de NFTs, desenvolvida como desafio técn
 
 🔗 **[Ver aplicação online](https://frontend-challenge-kappa-lac.vercel.app)**
 
-<!--
-SCREENSHOTS: tire prints da aplicação, salve em docs/screenshots/ e descomente o bloco abaixo.
-
 ## Telas
+
+### Catálogo e detalhe
 
 | Início | Detalhe do NFT |
 |---|---|
-| ![Início](docs/screenshots/inicio.png) | ![Detalhe](docs/screenshots/detalhe.png) |
+| ![Página inicial com catálogo, filtros e ordenação](docs/screenshots/inicio.png) | ![Detalhe de um NFT com galeria, edição e compra](docs/screenshots/detalhe.png) |
 
-| Carrinho | Mobile |
+### Carrinho
+
+| Carrinho | Carrinho com cupom aplicado |
 |---|---|
-| ![Carrinho](docs/screenshots/carrinho.png) | ![Mobile](docs/screenshots/mobile.png) |
--->
+| ![Carrinho com três NFTs e resumo de valores](docs/screenshots/carrinho.png) | ![Carrinho com cupom KURIO10 e desconto no total](docs/screenshots/desconto.png) |
+
+### Checkout
+
+| Pagamento | Revisão do pedido |
+|---|---|
+| ![Pagamento com dados do colecionador, carteira e rede](docs/screenshots/carteira.png) | ![Modal de revisão antes de enviar o pedido](docs/screenshots/revisao.png) |
+
+| Pedido pendente | Confirmação |
+|---|---|
+| ![Pedido em processamento, com aviso de mudança de preço em tempo real](docs/screenshots/processamento.png) | ![Recibo do pedido confirmado](docs/screenshots/confirma%C3%A7%C3%A3o.png) |
+
+### Mobile
+
+<img src="docs/screenshots/mobile.png" alt="Página inicial no mobile com navegação inferior" width="280" />
 
 ## Destaques
 
