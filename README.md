@@ -46,7 +46,7 @@ Aplicação front-end de um marketplace de NFTs, desenvolvida como desafio técn
 - **Tempo real com Socket.IO:** descarta eventos duplicados e antigos, e reconcilia os dados ao reconectar.
 - **Checkout idempotente:** o pedido usa `Idempotency-Key`, então clique repetido, timeout ou refresh não geram compra duplicada.
 - **Estado remoto com TanStack Query:** cache, retries apenas para falhas transitórias, atualização otimista com rollback e filtros do catálogo guardados na URL.
-- **Performance medida:** auditoria Lighthouse reproduzível (`npm run lighthouse`). No detalhe do NFT, o CLS no desktop caiu de 0,46 para 0.
+- **Performance medida:** Lighthouse com mediana de 3 medições. Desktop com nota 100 em Performance; mobile entre 82 e 88, abaixo da meta de 90, com as causas documentadas. No detalhe do NFT, o CLS no desktop caiu de 0,46 para 0.
 - **Ambiente simulado controlável:** camada MSW (REST + Socket.IO) com cenários de falha (latência, erro 503, sessão expirada, preço alterado no checkout etc.).
 
 ## Stack
@@ -92,10 +92,18 @@ Resumo das principais decisões. O detalhamento completo está em [`ARCHITECTURE
 - `npm run test:e2e` — 72 testes Playwright
 - `npm run lighthouse` — notas, LCP, CLS e TBT em `lighthouse/SUMMARY.md`
 
-<!--
-OPCIONAL: abra lighthouse/SUMMARY.md, copie os números reais e preencha uma tabela aqui.
-Não coloque valores que você não conferiu.
--->
+### Lighthouse
+
+Mediana de 3 medições por página e perfil, com build otimizado e mocks ativos (01/11/2026). Metas do desafio: Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95 e SEO ≥ 90.
+
+| Página | Perfil | Performance | Accessibility | Best Practices | SEO | LCP | CLS | TBT |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| Início | Desktop | **100** | 97 | 96 | 92 | 671 ms | 0,01 | 16 ms |
+| Detalhe | Desktop | **100** | 97 | 96 | 92 | 686 ms | 0 | 12 ms |
+| Início | Mobile | 88 | 97 | 96 | 92 | 773 ms | 0 | 485 ms |
+| Detalhe | Mobile | 82 | 97 | 96 | 92 | 3126 ms | 0 | 469 ms |
+
+No mobile, a Performance ficou abaixo da meta (88 e 82). A simulação usa 4G lenta e CPU 4x mais lenta, e o pacote inicial carrega a camada de mocks, que o enunciado exige no build publicado. As causas e os próximos cortes estão em [`ARCHITECTURE.md`](./ARCHITECTURE.md), na seção "Performance e Lighthouse". Relatórios completos em `lighthouse/reports/`.
 
 Os resultados abaixo da meta no mobile e as causas estão explicados em [`ARCHITECTURE.md`](./ARCHITECTURE.md), na seção "Performance e Lighthouse".
 
