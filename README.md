@@ -1,10 +1,92 @@
 # Kurio — Marketplace de NFTs
 
-Desafio Frontend: React + TypeScript, TanStack Router/Query, Axios, Socket.IO, Tailwind, shadcn/ui, MSW, Playwright e Lighthouse.
+![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=flat-square&logo=reactquery&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 
-> **Aplicação publicada:** https://frontend-challenge-kappa-lac.vercel.app
->
-> Estado atual: todas as telas (início, detalhe, carrinho, pagamento, confirmação, login, cadastro, perfil e carteiras, em desktop e mobile), camada MSW (REST + Socket.IO), 72 testes Playwright e auditoria Lighthouse (`npm run lighthouse`).
+Aplicação front-end de um marketplace de NFTs, desenvolvida como desafio técnico a partir de um layout no Figma. Cobre o fluxo completo de compra, com catálogo, detalhe, carrinho, pagamento e confirmação, além de login, cadastro, perfil e carteiras, em desktop e mobile.
+
+🔗 **[Ver aplicação online](https://frontend-challenge-kappa-lac.vercel.app)**
+
+<!--
+SCREENSHOTS: tire prints da aplicação, salve em docs/screenshots/ e descomente o bloco abaixo.
+
+## Telas
+
+| Início | Detalhe do NFT |
+|---|---|
+| ![Início](docs/screenshots/inicio.png) | ![Detalhe](docs/screenshots/detalhe.png) |
+
+| Carrinho | Mobile |
+|---|---|
+| ![Carrinho](docs/screenshots/carrinho.png) | ![Mobile](docs/screenshots/mobile.png) |
+-->
+
+## Destaques
+
+- **Fluxo completo de compra:** início, detalhe, carrinho, pagamento, confirmação, login, cadastro, perfil e carteiras, em desktop e mobile.
+- **72 testes E2E com Playwright**, rodando em desktop, mobile e tablet, incluindo regressão visual.
+- **Tempo real com Socket.IO:** descarta eventos duplicados e antigos, e reconcilia os dados ao reconectar.
+- **Checkout idempotente:** o pedido usa `Idempotency-Key`, então clique repetido, timeout ou refresh não geram compra duplicada.
+- **Estado remoto com TanStack Query:** cache, retries apenas para falhas transitórias, atualização otimista com rollback e filtros do catálogo guardados na URL.
+- **Performance medida:** auditoria Lighthouse reproduzível (`npm run lighthouse`). No detalhe do NFT, o CLS no desktop caiu de 0,46 para 0.
+- **Ambiente simulado controlável:** camada MSW (REST + Socket.IO) com cenários de falha (latência, erro 503, sessão expirada, preço alterado no checkout etc.).
+
+## Stack
+
+| Área | Tecnologias |
+|---|---|
+| Interface | React, TypeScript, Tailwind CSS, shadcn/ui |
+| Rotas e dados | TanStack Router, TanStack Query, Axios |
+| Tempo real | Socket.IO |
+| Mocks | MSW (REST e WebSocket) |
+| Qualidade | Playwright (E2E e regressão visual), Lighthouse, typecheck e lint |
+| Deploy | Vercel |
+
+<!--
+CONFIRMAR ANTES DE PUBLICAR: descreva com suas palavras o que veio pronto no desafio
+(enunciado, base com mocks) e o que você implementou. Isso valoriza o seu trabalho.
+Exemplo de estrutura, ajuste ao que for verdade:
+
+## O que eu implementei
+
+- Interface das telas a partir do Figma, em desktop e mobile
+- Estado remoto, carrinho, checkout e tratamento de erros
+- Integração com tempo real no cliente
+- Suíte E2E com Playwright e auditoria Lighthouse
+-->
+
+## Decisões técnicas
+
+Resumo das principais decisões. O detalhamento completo está em [`ARCHITECTURE.md`](./ARCHITECTURE.md).
+
+- **Camadas:** UI → hooks de feature → Axios → MSW. Os mocks existem só na camada de rede, então componentes e hooks não têm caminhos alternativos para dados fictícios.
+- **Sessão:** em caso de `401 session_expired`, a sessão é encerrada, o cache é limpo, o socket é fechado e o usuário volta ao login. Depois do login, retorna para a rota em que estava.
+- **Carrinho:** visitante usa `localStorage`; usuário autenticado usa a API como fonte da verdade, com atualização otimista. Preço, desconto, taxa e total vêm sempre da cotação da API, e as contas em ETH usam `BigInt` (18 casas) para evitar erro de ponto flutuante.
+- **Pedidos:** a chave de idempotência é derivada da intenção de compra. Valores que mudam com preço e estoque ficam de fora de propósito, para que uma nova tentativa recupere o mesmo pedido em vez de criar outro.
+- **Cache e retries:** leituras repetem até 2 vezes com backoff, só para rede, 5xx e 429. Mutations não repetem sozinhas.
+- **Tempo real:** eventos têm `eventId` e `version`; duplicatas e versões antigas são ignoradas, e a reconexão invalida o cache ativo.
+- **Performance:** esqueleto do detalhe com as mesmas dimensões do conteúdo final (elimina o deslocamento de layout), code splitting das rotas menos acessadas e imagens com `width` e `height`.
+
+## Qualidade
+
+- `npm run typecheck` e `npm run lint`
+- `npm run test:e2e` — 72 testes Playwright
+- `npm run lighthouse` — notas, LCP, CLS e TBT em `lighthouse/SUMMARY.md`
+
+<!--
+OPCIONAL: abra lighthouse/SUMMARY.md, copie os números reais e preencha uma tabela aqui.
+Não coloque valores que você não conferiu.
+-->
+
+Os resultados abaixo da meta no mobile e as causas estão explicados em [`ARCHITECTURE.md`](./ARCHITECTURE.md), na seção "Performance e Lighthouse".
+
+---
+
+# Documentação técnica
 
 ## Setup
 
