@@ -46,18 +46,19 @@ SCREENSHOTS: tire prints da aplicação, salve em docs/screenshots/ e descomente
 | Qualidade | Playwright (E2E e regressão visual), Lighthouse, typecheck e lint |
 | Deploy | Vercel |
 
-<!--
-CONFIRMAR ANTES DE PUBLICAR: descreva com suas palavras o que veio pronto no desafio
-(enunciado, base com mocks) e o que você implementou. Isso valoriza o seu trabalho.
-Exemplo de estrutura, ajuste ao que for verdade:
+
+
 
 ## O que eu implementei
 
-- Interface das telas a partir do Figma, em desktop e mobile
-- Estado remoto, carrinho, checkout e tratamento de erros
-- Integração com tempo real no cliente
-- Suíte E2E com Playwright e auditoria Lighthouse
--->
+O desafio forneceu o enunciado e o layout no Figma. Todo o restante foi desenvolvido por mim:
+
+- **Interface:** todas as telas (início, detalhe, carrinho, pagamento, confirmação, login, cadastro, perfil e carteiras), em desktop e mobile, a partir do Figma
+- **Estado remoto:** TanStack Query com cache, retries para falhas transitórias, atualização otimista com rollback e filtros do catálogo guardados na URL
+- **Carrinho e checkout:** carrinho de visitante e autenticado com mesclagem no login, cotação como fonte da verdade e pedido idempotente
+- **Tempo real:** cliente Socket.IO com descarte de duplicatas e eventos antigos, e reconciliação ao reconectar
+- **Camada de mocks:** MSW para REST e WebSocket, com cenários de falha controláveis
+- **Qualidade:** 72 testes E2E com Playwright (incluindo regressão visual) e auditoria Lighthouse reproduzível
 
 ## Decisões técnicas
 
