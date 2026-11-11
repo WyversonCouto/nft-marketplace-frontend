@@ -9,6 +9,8 @@
 
 Aplicação front-end de um marketplace de NFTs, desenvolvida como desafio técnico a partir de um layout no Figma. Cobre o fluxo completo de compra, com catálogo, detalhe, carrinho, pagamento e confirmação, além de login, cadastro, perfil e carteiras, em desktop e mobile.
 
+> Desafio proposto em [junglegaming/frontend-challenge](https://github.com/junglegaming/frontend-challenge). O enunciado original está em [`ENUNCIADO.md`](./ENUNCIADO.md).
+
 🔗 **[Ver aplicação online](https://frontend-challenge-kappa-lac.vercel.app)**
 
 ## Telas
